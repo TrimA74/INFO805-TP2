@@ -91,8 +91,11 @@ namespace rt {
           Real distance = (p - ray.origin).dot(p - ray.origin);
           if(distanceMin == -1.0f){
             distanceMin = distance;
+              p = pOther;
+              object = *(it);
           }
           else if(distance < distanceMin){
+              //std::cout << "coucou" << std::endl;
             distanceMin = distance;
             p = pOther;
             object = *(it);

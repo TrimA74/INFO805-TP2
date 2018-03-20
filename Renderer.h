@@ -128,8 +128,34 @@ namespace rt {
       Real ri = ptrScene->rayIntersection( ray, obj_i, p_i );
       // Nothing was intersected
       if ( ri >= 0.0f ) return Color( 0.0, 0.0, 0.0 ); // some background color
-      return Color( 1.0, 1.0, 1.0 );
+
+      Color final = obj_i->getMaterial(p_i).ambient + obj_i->getMaterial(p_i).diffuse;
+
+      //return Color( final.r() ,final.g(),final.b());
+      return illumination(ray,obj_i,p_i);
     }
+
+    /// Calcule l'illumination de l'objet \a obj au point \a p, sachant que l'observateur est le rayon \a ray.
+    Color illumination( const Ray& ray, GraphicalObject* obj, Point3 p ){
+      Material m = obj->getMaterial(p);
+      Color final = Color(0,0,0);
+      for(std::vector<Light*>::const_iterator it = this->ptrScene->myLights.begin() , itE=this->ptrScene->myLights.end();it!=itE;it++){
+        Vector3 lightDirection = (*it)->direction(ray.direction);
+        // cosinus de l'angle entre lightDirection et la normale au point p
+        Vector3 normalP = obj->getNormal(p);
+        Real coeffDiff = normalP.dot(lightDirection) /( lightDirection.norm() * normalP.norm() );
+        if(coeffDiff < 0 ) {coeffDiff = 0;} // (coeffDiff = 0.0 si négatif)
+        //std::cout << " coeff " << coeffDiff << std::endl;
+        final += (*it)->color(p) * m.diffuse * coeffDiff;
+        //std::cout << "redblo : " << final.r() << std::endl;
+
+      }
+      final += m.ambient;
+      //std::cout << "red : " << final.r() << std::endl;
+      return final;
+
+    }
+
 
   };
 

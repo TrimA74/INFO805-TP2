@@ -96,32 +96,30 @@ rt::Sphere::rayIntersection( const Ray& ray, Point3& p )
     Vector3 w = ray.direction / ray.direction.norm();
     // longueur entre ray.origin et le projeté de p sur ray
     Real distanceOH = w.dot(OP);
-    Real distanceHP = OP.dot(OP) - ( distanceOH * distanceOH ) ;
+    Real distanceHPCarre = OP.dot(OP) - ( distanceOH * distanceOH ) ;
     //pythagore
     //std::cout << "distanceHP " << distanceHP << std::endl;
      //std::cout << "radius " << (this->radius * this->radius) << std::endl;
-    if(distanceHP > (this->radius * this->radius)){
+    if(distanceHPCarre > (this->radius * this->radius)){
         return 1.0f;
     } else {
-        std::cout << "touché" << std::endl;
         // b
-        Real b = distanceOH * distanceOH + this->radius * this->radius;
-        //c
-        Real c = distanceOH - sqrt (b);
-
-        Real t1 = c / ( w - ray.origin).norm();
-        Real t2 = c + 2 * b   / ( w - ray.origin).norm();
+        Real b = sqrt( this->radius * this->radius -  distanceHPCarre);
+        Real t1 = (distanceOH - b);
+        Real t2 = (distanceOH + b);
 
         if( t1 < 0 && t2 < 0 )
             return 1.0f;
-        if( t1 > 0 || t2 > 0 ){
-            if(t1 < t2) {
-                p = Point3(ray.origin + t1 * w);
-            } else {
-                p = Point3(ray.origin + t2 * w);
-            }
+        if( t1 > 0 && t2 > 0 ) {
+            p = ray.origin + std::min(t1, t2) * w;
+            return -1.0f;
+        } else if( t1 > 0 || t2 > 0 ) {
+            if(t1 < 0 ){ p = ray.origin + t2* w; }
+            else { ray.origin + t1 * w; }
             return -1.0f;
         }
+
+
 
 
 
