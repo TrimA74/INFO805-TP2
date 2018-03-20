@@ -82,8 +82,24 @@ namespace rt {
     rayIntersection( const Ray& ray,
                      GraphicalObject*& object, Point3& p )
     {
-      object = 0;
-      return 1.0f;
+      Real distanceMin = -1.0f;
+      Point3 pOther;
+
+      for(std::vector<GraphicalObject*>::iterator it = this->myObjects.begin(), itE = this->myObjects.end(); it!=itE; it++){
+        if( (*it)->rayIntersection(ray,pOther) < 0 ){
+
+          Real distance = (p - ray.origin).dot(p - ray.origin);
+          if(distanceMin == -1.0f){
+            distanceMin = distance;
+          }
+          else if(distance < distanceMin){
+            distanceMin = distance;
+            p = pOther;
+            object = *(it);
+          }
+        };
+      }
+      return -distanceMin;
     }
 
   private:
