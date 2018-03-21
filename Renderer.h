@@ -134,8 +134,14 @@ namespace rt {
       //return Color( final.r() ,final.g(),final.b());
       return illumination(ray,obj_i,p_i);
     }
+      /// Calcule le vecteur réfléchi à W selon la normale N.
+      Vector3 reflect( const Vector3& W, Vector3 N ) const {
+          return W - 2 * W.dot(N) * N;
+      }
 
-    /// Calcule l'illumination de l'objet \a obj au point \a p, sachant que l'observateur est le rayon \a ray.
+
+
+      /// Calcule l'illumination de l'objet \a obj au point \a p, sachant que l'observateur est le rayon \a ray.
     Color illumination( const Ray& ray, GraphicalObject* obj, Point3 p ){
       Material m = obj->getMaterial(p);
       Color final = Color(0,0,0);
@@ -143,11 +149,17 @@ namespace rt {
         Vector3 lightDirection = (*it)->direction(ray.direction);
         // cosinus de l'angle entre lightDirection et la normale au point p
         Vector3 normalP = obj->getNormal(p);
+        Vector3 w = reflect(ray.direction,normalP);
+
+        Real cosb = w.dot(lightDirection)/( lightDirection.norm() * w.norm() );
+        if(cosb < 0 ) {cosb = 0;} // (cosb = 0.0 si négatif)
+        Real coeffSpec = std::pow(cosb,m.shinyness);
+
         Real coeffDiff = normalP.dot(lightDirection) /( lightDirection.norm() * normalP.norm() );
-        if(coeffDiff < 0 ) {coeffDiff = 0;} // (coeffDiff = 0.0 si négatif)
-        //std::cout << " coeff " << coeffDiff << std::endl;
+        if(coeffDiff < 0 ) {coeffDiff = 0;} // (coeffDiff = 0.0 si négatif)*
+
+        final += (*it)->color(p) * m.specular * coeffSpec;
         final += (*it)->color(p) * m.diffuse * coeffDiff;
-        //std::cout << "redblo : " << final.r() << std::endl;
 
       }
       final += m.ambient;
