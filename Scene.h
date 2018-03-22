@@ -84,18 +84,16 @@ namespace rt {
     {
       Real distanceMin = -1.0f;
       Point3 pOther;
-
       for(std::vector<GraphicalObject*>::iterator it = this->myObjects.begin(), itE = this->myObjects.end(); it!=itE; it++){
         if( (*it)->rayIntersection(ray,pOther) < 0 ){
 
-          Real distance = (p - ray.origin).dot(p - ray.origin);
+          Real distance = (pOther - ray.origin).dot(pOther - ray.origin);
           if(distanceMin == -1.0f){
             distanceMin = distance;
               p = pOther;
               object = *(it);
           }
           else if(distance < distanceMin){
-              //std::cout << "coucou" << std::endl;
             distanceMin = distance;
             p = pOther;
             object = *(it);
