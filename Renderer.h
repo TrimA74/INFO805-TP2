@@ -166,9 +166,17 @@ namespace rt {
             //if ( ri >= 0.0f ) return Color( 0.0, 0.0, 0.0 ); // some background color
             if ( ri >= 0.0f ) return this->background(ray); // some background color
 
+            Material m = obj_i->getMaterial(p_i);
 
-            //return Color( final.r() ,final.g(),final.b());
-            return illumination(ray,obj_i,p_i);
+            if(ray.depth > 0 && m.coef_reflexion !=0){
+                Vector3 rayReflect = reflect(ray.direction,obj_i->getNormal(p_i));
+                Ray newRay = Ray(p_i + rayReflect * 0.001f,rayReflect,ray.depth -1);
+                Color c_refl = trace(newRay);
+                result += c_refl * m.specular * m.coef_reflexion;
+
+            }
+            result += illumination(ray,obj_i,p_i);
+            return result;
         }
         /// Calcule le vecteur réfléchi à W selon la normale N.
         Vector3 reflect( const Vector3& W, Vector3 N ) const {
