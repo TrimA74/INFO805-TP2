@@ -182,7 +182,13 @@ namespace rt {
             Material m = obj->getMaterial(p);
             Color final = Color(0,0,0);
             for(std::vector<Light*>::const_iterator it = this->ptrScene->myLights.begin() , itE=this->ptrScene->myLights.end();it!=itE;it++){
+
                 Vector3 lightDirection = (*it)->direction(p);
+                Color lightColor= (*it)->color(p);
+                Ray pointToLight = Ray(p,lightDirection);
+                Color colorShadow = this->shadow(pointToLight,lightColor);
+
+
                 // cosinus de l'angle entre lightDirection et la normale au point p
                 Vector3 normalP = obj->getNormal(p);
                 Vector3 w = reflect(ray.direction,normalP);
@@ -195,7 +201,7 @@ namespace rt {
                 if(coeffDiff < 0 ) {coeffDiff = 0;} // (coeffDiff = 0.0 si négatif)*
 
                 final += (*it)->color(p) * m.specular * coeffSpec;
-                final += (*it)->color(p) * m.diffuse * coeffDiff;
+                final += (*it)->color(p) * m.diffuse * coeffDiff  * colorShadow;
 
             }
             final += m.ambient;
@@ -221,6 +227,30 @@ namespace rt {
             }
             if ( ptrBackground != 0 ) result += ptrBackground->backgroundColor( ray );
             return result;
+        }
+
+        /// Calcule la couleur de la lumière (donnée par light_color) dans la
+        /// direction donnée par le rayon. Si aucun objet n'est traversé,
+        /// retourne light_color, sinon si un des objets traversés est opaque,
+        /// retourne du noir, et enfin si les objets traversés sont
+        /// transparents, attenue la couleur.
+        Color shadow( const Ray& ray, Color light_color ){
+            GraphicalObject* obj_i = 0; // pointer to intersected object
+            Point3           p_i;       // point of intersection
+            Point3 newP = ray.origin + ray.direction * 0.01f; // on decale le point p
+            while(light_color.max() > 0.003f){
+                // Look for intersection in this direction.
+                Ray newRay = Ray(newP,ray.direction,ray.depth);
+                Real ri = ptrScene->rayIntersection( newRay, obj_i, p_i );
+                if ( ri >= 0.0f ){
+                    break;
+                }
+                Material m = obj_i->getMaterial(p_i);
+                light_color = light_color * m.diffuse * m.coef_refraction;
+                newP = p_i;
+
+            }
+            return light_color;
         }
 
 

@@ -25,15 +25,17 @@ int main(int argc, char** argv)
                                     Color( 1.0, 1.0, 1.0 ) );
   Light* light1 = new PointLight( GL_LIGHT1, Point4( 7,5,15,1 ),
                                   Color( 1.0, 1.0, 1.0 ) );
-  scene.addLight( light0 );
+  //scene.addLight( light0 );
   scene.addLight( light1 );
 
   // Objects
-  Sphere* sphere1 = new Sphere( Point3( 0, 0, 0), 2.0, Material::bronze() );
-  Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::emerald() );
+  Sphere* sphere1 = new Sphere( Point3( -4.5f, 4, 10), 2.0, Material::emerald() );
+  Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::whitePlastic() );
+  Sphere* sphere3 = new Sphere( Point3( 0, 4, 5), 2.0, Material::bronze() );
   scene.addObject( sphere1 );
   scene.addObject( sphere2 );
-  
+  scene.addObject( sphere3 );
+
   // Instantiate the viewer.
   Viewer viewer;
   // Give a name
