@@ -175,7 +175,19 @@ namespace rt {
                 result += c_refl * m.specular * m.coef_reflexion;
 
             }
-            result += illumination(ray,obj_i,p_i);
+
+            if(ray.depth > 0 && m.coef_refraction !=0){
+                Ray newRay = refractionRay(ray,p_i,obj_i->getNormal(p_i),m);
+                Color c_refrac = trace(newRay);
+                result += c_refrac * m.diffuse * m.coef_refraction;
+
+            }
+            ///  Il faut multiplier le résultat de l'illumination
+            /// par le coefficient de diffusion du matériau sauf si on est arrivé à la profondeur 0.
+            Color tmp = illumination(ray,obj_i,p_i);
+            if(ray.depth !=0)
+                tmp = tmp * obj_i->getMaterial(p_i).coef_diffusion;
+            result += tmp;
             return result;
         }
         /// Calcule le vecteur réfléchi à W selon la normale N.
@@ -209,7 +221,9 @@ namespace rt {
                 if(coeffDiff < 0 ) {coeffDiff = 0;} // (coeffDiff = 0.0 si négatif)*
 
                 final += (*it)->color(p) * m.specular * coeffSpec;
-                final += (*it)->color(p) * m.diffuse * coeffDiff  * colorShadow;
+                final += (*it)->color(p) * m.diffuse * coeffDiff;
+
+                final = final * colorShadow;
 
             }
             final += m.ambient;
@@ -245,8 +259,9 @@ namespace rt {
         Color shadow( const Ray& ray, Color light_color ){
             GraphicalObject* obj_i = 0; // pointer to intersected object
             Point3           p_i;       // point of intersection
-            Point3 newP = ray.origin + ray.direction * 0.01f; // on decale le point p
+            Point3 newP =  ray.origin;
             while(light_color.max() > 0.003f){
+                newP =  newP + ray.direction * 0.01f; // on decale le point p;
                 // Look for intersection in this direction.
                 Ray newRay = Ray(newP,ray.direction,ray.depth);
                 Real ri = ptrScene->rayIntersection( newRay, obj_i, p_i );
@@ -259,6 +274,38 @@ namespace rt {
 
             }
             return light_color;
+        }
+
+        Ray refractionRay( const Ray& aRay, const Point3& p, Vector3 N, const Material& m ){
+            Real tmp;
+            Real r = m.in_refractive_index / m.out_refractive_index;
+
+            if( r > 1){
+                r = m.out_refractive_index / m.in_refractive_index;
+            }
+            Real c  = N.dot(aRay.direction);
+            if(c <= 0){
+                c = -1.0f *c;
+                tmp = r*c + sqrt(1 - r*r * (1 - c*c));
+            } else {
+                tmp = r*c - sqrt(1 - r*r * (1 - c*c));
+            }
+
+            Vector3 vRefrac = Vector3(r*aRay.direction + tmp * N);
+
+            /*
+            if(m.coef_reflexion == 0.05f && m.coef_refraction == 0.98f) {
+                std::cout << vRefrac << std::endl;
+            }*/
+
+            Ray newRay = Ray(p + vRefrac * 0.001f,vRefrac,aRay.depth -1);
+            //std::cout << "ray de base : " <<  aRay.direction << "new ray : "<< newRay.direction << std::endl;
+            Real angle = (aRay.direction.dot(vRefrac)) / aRay.direction.norm() * vRefrac.norm();
+            /*
+            if(m.coef_reflexion == 0.05f && m.coef_refraction == 0.98f){
+                std::cout << "angle" <<  angle * (180/3.14) << std::endl;
+            }*/
+            return newRay;
         }
 
 
