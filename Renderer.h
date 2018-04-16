@@ -279,35 +279,29 @@ namespace rt {
         Ray refractionRay( const Ray& aRay, const Point3& p, Vector3 N, const Material& m ){
             Real tmp;
             Real r = m.in_refractive_index / m.out_refractive_index;
+            Real c  = (-1.0f) * N.dot(aRay.direction);
 
-            if( r > 1){
-                r = m.out_refractive_index / m.in_refractive_index;
+            //When the ray is inside the object and go out
+            if(aRay.direction.dot(N) <= 0 ) {
+                r = 1.0f /r;
             }
-            Real c  = N.dot(aRay.direction);
-            if(c <= 0){
-                c = -1.0f *c;
-                tmp = r*c + sqrt(1 - r*r * (1 - c*c));
-            } else {
-                tmp = r*c - sqrt(1 - r*r * (1 - c*c));
+            if(c>0)
+                tmp = r*c - sqrt(1 - ( (r*r) * (1 - (c*c) )));
+            else {
+                tmp = r * c + sqrt(1 - ((r * r) * (1 - (c * c))));
             }
 
             Vector3 vRefrac = Vector3(r*aRay.direction + tmp * N);
 
-            /*
-            if(m.coef_reflexion == 0.05f && m.coef_refraction == 0.98f) {
-                std::cout << vRefrac << std::endl;
-            }*/
+            //Total reflexion
+            if( 1 - ( (r*r) * (1 - (c*c) )) < 0) {
+                vRefrac = reflect(aRay.direction,N);
+            }
 
-            Ray newRay = Ray(p + vRefrac * 0.001f,vRefrac,aRay.depth -1);
-            //std::cout << "ray de base : " <<  aRay.direction << "new ray : "<< newRay.direction << std::endl;
-            Real angle = (aRay.direction.dot(vRefrac)) / aRay.direction.norm() * vRefrac.norm();
-            /*
-            if(m.coef_reflexion == 0.05f && m.coef_refraction == 0.98f){
-                std::cout << "angle" <<  angle * (180/3.14) << std::endl;
-            }*/
+            Ray newRay = Ray(p + vRefrac * 0.01f,vRefrac,aRay.depth -1);
+
             return newRay;
         }
-
 
     };
 
