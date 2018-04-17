@@ -91,15 +91,14 @@ rt::Sphere::getMaterial( Point3 /* p */ )
 rt::Real
 rt::Sphere::rayIntersection( const Ray& ray, Point3& p )
 {
-  // TO DO
     Vector3 OP = this->center - ray.origin;
     Vector3 w = ray.direction / ray.direction.norm();
-    // longueur entre ray.origin et le projeté de p sur ray
+
+    /// longueur entre ray.origin et le projeté de p sur ray
     Real distanceOH = w.dot(OP);
     Real distanceHPCarre = OP.dot(OP) - ( distanceOH * distanceOH ) ;
-    //pythagore
-    //std::cout << "distanceHP " << distanceHP << std::endl;
-     //std::cout << "radius " << (this->radius * this->radius) << std::endl;
+
+    /// Pythagore
     if(distanceHPCarre > (this->radius * this->radius)){
         return 1.0f;
     } else {
@@ -110,19 +109,18 @@ rt::Sphere::rayIntersection( const Ray& ray, Point3& p )
 
         if( t1 < 0 && t2 < 0 )
             return 1.0f;
-        if( t1 > 0 && t2 > 0 ) {
+        else if( t1 > 0 && t2 > 0 ) {
             p = ray.origin + std::min(t1, t2) * w;
             return -1.0f;
-        } else if( t1 > 0 || t2 > 0 ) {
-            if(t1 < 0 ){ p = ray.origin + t2* w; }
-            else { ray.origin + t1 * w; }
+        }
+        else  {
+            if(t1 < 0 ){
+                p = ray.origin + t2* w;
+            }
+            else {
+                p = ray.origin + t1 * w;
+            }
             return -1.0f;
         }
-
-
-
-
-
     }
-  return 1.0f;
 }
