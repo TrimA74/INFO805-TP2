@@ -3,7 +3,7 @@
 ![alt rendu_4.3](https://raw.githubusercontent.com/TrimA74/INFO805-TP2/master/rendu_4.3.png "Rendu 4.3")
 
 ## Sujet
-[Lien vers le sujet](https://raw.githubusercontent.com/TrimA74/INFO805-TP2/master/sujet.pdf)
+[Lien vers le sujet](https://github.com/TrimA74/INFO805-TP2/blob/master/sujet.pdf)
 ## Dépendances
 - Compilateur C++ 11 
 - [Qt](https://www.qt.io/)
