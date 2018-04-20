@@ -28,8 +28,8 @@ namespace rt {
         };
 
         void coordinates( Point3 p, Real& x, Real& y) {
-            x = u[0] + p[0];
-            y = u[1] + p[1];
+            x = u[0] + v[0] + p[0];
+            y = u[1] + v[1] + p[1];
         }
 
         void init( Viewer& /* viewer */ ) {}
@@ -72,29 +72,22 @@ namespace rt {
             Vector3 N = this->getNormal(c) / this->getNormal(c).norm();
             Vector3 W = ray.direction / ray.direction.norm();
             Real wn = W.dot(N);
-            Vector3 tmp = (c - ray.origin) / (c - ray.origin).norm();
+            Vector3 n0w0 = (c - ray.origin) ;
             if(wn == 0.0f) {
 
-                if( (N.dot(tmp) / wn) == 0){
-                    t = N.dot(tmp) / wn;
+                if( (N.dot(n0w0)) == 0){
+                    t = 0;
                     p = ray.origin + W* t;
-                    if(t >=0.0f){
-                        //std::cout << p << std::endl;
-                        return -1.0f;
-                    }
+                    return -1.0f;
                 } else {
                     return 1.0f;
                 }
             }
             else {
-                t = N.dot(tmp) / wn;
+                t = N.dot(n0w0) / wn;
                 p = ray.origin + W* t;
-                if(t >=0.0f){
-                    //std::cout << p << std::endl;
-                    return -1.0f;
-                }
             }
-            return 1.0f;
+            return t >=0 ? -1.0f :1.0f;
         }
 
     public:
