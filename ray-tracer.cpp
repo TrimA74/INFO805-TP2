@@ -8,6 +8,7 @@
 #include "Sphere.h"
 #include "Material.h"
 #include "PointLight.h"
+#include "PeriodicPlane.hpp"
 
 using namespace std;
 using namespace rt;
@@ -47,13 +48,33 @@ int main(int argc, char** argv)
     //scene.addLight( light0 );
     scene.addLight( light1 );
     // Objects
-    Sphere* sphere1 = new Sphere( Point3( 0, 0, 0), 2.0, Material::bronze() );
-    Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::emerald() );
-    Sphere* sphere3 = new Sphere( Point3( 6, 6, 0), 3.0, Material::whitePlastic() );
+    Sphere* sphere1 = new Sphere( Point3( 0, 0, 5), 2.0, Material::bronze() );
+    Sphere* sphere2 = new Sphere( Point3( 0, 4, 5), 1.0, Material::emerald() );
+    Sphere* sphere3 = new Sphere( Point3( 6, 6, 5), 3.0, Material::whitePlastic() );
     scene.addObject( sphere1 );
     scene.addObject( sphere2 );
     scene.addObject( sphere3 );
-    addBubble( scene, Point3( -5, 4, -1 ), 2.0, Material::glass() );
+    addBubble( scene, Point3( -5, 4, 6), 2.0, Material::glass() );
+
+    // Un sol noir et blanc
+    PeriodicPlane* pplane = new PeriodicPlane( Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
+    Material::whitePlastic(), Material::redPlastic(), 0.05f );
+
+    scene.addObject( pplane );
+
+    /*
+    // Un mur de building "moderne" à gauche.
+    PeriodicPlane* pplane2 = new PeriodicPlane( Point3( -10, 0, 0 ), Vector3( 0, 2, 0 ), Vector3( 0, 0, 4 ),
+                                                Material::emerald(), Material::emerald(), 0.025f );
+
+
+
+    // Un mur de building "moderne" à gauche.
+    PeriodicPlane* pplane3 = new PeriodicPlane( Point3( -10, -30, 0 ), Vector3( 0, 2,12), Vector3( 0, 21, 4 ),
+                                                Material::bronze(), Material::bronze(), 0.025f );
+
+    scene.addObject( pplane2 );
+    scene.addObject( pplane3 );*/
 
 
     /********* MY SCENE
