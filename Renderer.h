@@ -9,6 +9,8 @@
 #include "Color.h"
 #include "Image2D.h"
 #include "Ray.h"
+#include <random>
+#include <iostream>
 
 /// Namespace RayTracer
 namespace rt {
@@ -148,6 +150,41 @@ namespace rt {
                 }
             }
             std::cout << "Done." << std::endl;
+        }
+
+        /// anti-aliasing renderer
+        void randomRender( Image2D<Color>& image, int max_depth )
+        {
+            int antialiasing = 20;
+
+            std::cout << "Rendering into image ... might take a while." << std::endl;
+            image = Image2D<Color>( myWidth, myHeight );
+            for ( int y = 0; y < myHeight; ++y ) {
+                for ( int x = 0; x < myWidth; ++x ) {
+                    Color result = Color(0.0f,0.0f,0.0f);
+                    for(int i = 0 ; i<antialiasing ; i++) {
+                        Real    progress   = (Real) y / (Real)(myHeight-1);
+
+                        Real    ty   = ((Real) y + randFloat(0.0, 1.0))/ (Real)(myHeight-1);
+                        progressBar( std::cout, progress, 1.0 );
+                        Vector3 dirL = (1.0f - ty) * myDirUL + ty * myDirLL;
+                        Vector3 dirR = (1.0f - ty) * myDirUR + ty * myDirLR;
+                        dirL        /= dirL.norm();
+                        dirR        /= dirR.norm();
+                        Real    tx   = ((Real) x + randFloat(0.0, 1.0)) / (Real)(myWidth-1);
+                        Vector3 dir  = ((1.0f - tx) * dirL) + (tx * dirR);
+                        Ray eye_ray  = Ray( myOrigin, dir, max_depth );
+                        result = result + trace( eye_ray );
+                    }
+                    result =  result/antialiasing;
+                    image.at( x, y ) = result.clamp();
+                }
+            }
+            std::cout << "Done." << std::endl;
+        }
+
+        float randFloat(float a, float b){
+            return ((b - a ) * ((float) rand() / RAND_MAX)) + a;
         }
 
 
