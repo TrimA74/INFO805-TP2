@@ -7,6 +7,7 @@
 
 
 #include "GraphicalObject.h"
+#include <math.h>
 
 /// Namespace RayTracer
 namespace rt {
@@ -62,9 +63,18 @@ namespace rt {
         }
 
         Material getMaterial( Point3 p ) {
+
             Real x,y;
             coordinates(p,x,y);
-            return ((int) x == (int) (x + w)) && ((int) y == (int) (y + w)) ? main_m : band_m;
+            int roundX = (int)x;
+            int roundY = (int)y;
+            Real xDiff = x - roundX;
+            Real yDiff = y - roundY;
+            if(xDiff < 0){xDiff *= -1.0f;}
+            if(yDiff < 0){yDiff *= -1.0f;}
+            return (xDiff < w || yDiff < w) ? band_m : main_m;
+
+
         }
 
         Real rayIntersection( const Ray& ray, Point3& p ) {
