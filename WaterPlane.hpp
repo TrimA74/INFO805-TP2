@@ -29,8 +29,8 @@ namespace rt {
         };
 
         void coordinates( Point3 p, Real& x, Real& y) {
-            x = u[0] + v[0] + p[0];
-            y = u[1] + v[1] + p[1];
+            x = p[0];
+            y = p[1];
         }
 
         void init( Viewer& /* viewer */ ) {}
@@ -78,7 +78,7 @@ namespace rt {
                 r = waveList.at(i).r;
                 l = waveList.at(i).l;
                 phase = waveList.at(i).phase;
-                Real t = p[0] * cos(a) + p[1] * sin(a);
+                Real t = x * cos(a) + y * sin(a);
 
                 if(t != 0.0f){phase = 0.0f;}
                 Real f = (2 * M_PI * t )/ l + phase;
