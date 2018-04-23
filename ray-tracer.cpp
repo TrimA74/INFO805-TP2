@@ -9,6 +9,7 @@
 #include "Material.h"
 #include "PointLight.h"
 #include "PeriodicPlane.hpp"
+#include "WaterPlane.hpp"
 
 using namespace std;
 using namespace rt;
@@ -47,7 +48,7 @@ int main(int argc, char** argv)
     Light* light1 = new PointLight( GL_LIGHT1, Point4( -10,-4,2,1 ),
                                     Color( 1.0, 0.8, 0.8 ) );
     scene.addLight( light0 );
-    //scene.addLight( light1 );
+    scene.addLight( light1 );
     // Objects
     Sphere* sphere1 = new Sphere( Point3( 0, 0, 2), 2.0, Material::bronze() );
     Sphere* sphere2 = new Sphere( Point3( 0, 4, 1), 1.0, Material::emerald() );
@@ -61,7 +62,11 @@ int main(int argc, char** argv)
     PeriodicPlane* pplane = new PeriodicPlane( Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
     Material::whitePlastic(), Material::darkMatter(), 0.1f );
 
-    scene.addObject( pplane );
+    WaterPlane* wplane = new WaterPlane(Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
+                                        Material::blueWater(),0.2f,0.3f,5.0f,0.3f);
+
+    //scene.addObject( pplane );
+    scene.addObject( wplane );
 
     /*
     // Un mur de building "moderne" à gauche.
