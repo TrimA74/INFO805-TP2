@@ -20,15 +20,11 @@ namespace rt {
         /// band around (0,0) and its period to put material \a band_m,
         /// otherwise \a main_m is used.
         WaterPlane( Point3 c, Vector3 u, Vector3 v,
-                       Material main_m, Real r, Real a, Real l, Real phase) {
+                       Material main_m) {
             this->c = c;
             this->u = u;
             this->v = v;
             this->main_m = main_m;
-            this->r = r;
-            this->a = a;
-            this->l = l;
-            this->phase = phase;
 
         };
 
@@ -74,7 +70,7 @@ namespace rt {
             addWave(0.76f,1.69f,1.6f,0.0f);
 
 
-            Real x,y,derivativeX,derivativeY;
+            Real x,y,derivativeX,derivativeY,a,r,l,phase;
             Vector3 direction,vy=Vector3(0.0,0.0,0.0),vx=Vector3(0.0,0.0,0.0);
             coordinates(p,x,y);
             for(int i =0 ; i < waveList.size();i++){
@@ -82,15 +78,15 @@ namespace rt {
                 r = waveList.at(i).r;
                 l = waveList.at(i).l;
                 phase = waveList.at(i).phase;
-                Real t = x * cos(a) + y * sin(a);
+                Real t = p[0] * cos(a) + p[1] * sin(a);
 
                 if(t != 0.0f){phase = 0.0f;}
                 Real f = (2 * M_PI * t )/ l + phase;
                 derivativeX = (r * cos(a) * 2 * M_PI * sin(f)) / l;
                 derivativeY = (r * sin(a) * 2 * M_PI * sin(f)) / l;
 
-                vx -= Vector3(1,0,- derivativeX);
-                vy -= Vector3(0,1,- derivativeY);
+                vx += Vector3(1,0,- derivativeX);
+                vy += Vector3(0,1,- derivativeY);
             }
 
             Vector3 cross = vx.cross(vy);
@@ -135,7 +131,6 @@ namespace rt {
         Point3 c;
         Vector3 u, v;
         Material  main_m;
-        Real a,r,l,phase;
         std::vector<Wave> waveList;
     };
 }

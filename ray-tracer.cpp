@@ -45,7 +45,7 @@ int main(int argc, char** argv)
                                     Color( 1.0, 1.0, 1.0 ) );
 
 
-    Light* light1 = new PointLight( GL_LIGHT1, Point4( -10,-4,2,1 ),
+    Light* light1 = new PointLight( GL_LIGHT1, Point4( -10,-4,5,1 ),
                                     Color( 1.0, 0.8, 0.8 ) );
     scene.addLight( light0 );
     scene.addLight( light1 );
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     Material::whitePlastic(), Material::darkMatter(), 0.1f );
 
     WaterPlane* wplane = new WaterPlane(Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
-                                        Material::blueWater(),0.2f,0.3f,5.0f,0.3f);
+                                        Material::blueWater());
 
     //scene.addObject( pplane );
     scene.addObject( wplane );
