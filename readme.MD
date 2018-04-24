@@ -23,7 +23,7 @@ Nous avons fait les extensions suivantes :
 
 ## Dernier rendu 
 
-![alt rendu_final](https://raw.githubusercontent.com/TrimA74/INFO805-TP2/master/new_final.png "Rendu final")
+![alt rendu_final](https://i.gyazo.com/3df51bba6316f54635437c6a63b3b6ec.png "Rendu final")
 
 ## Bétisier
 Mur en émeraude avec un PeriodicPlane de qualité
