@@ -62,12 +62,11 @@ namespace rt {
 
             waveList.clear();
 
-            addWave(0.9f,3.2f,2.4f,0.0f);
-            addWave(0.24f,2.4f,0.8f,0.0f);
-
-            addWave(0.69f,1.1f,1.31f,0.0f);
-            addWave(0.11f,0.54f,0.52f,0.0f);
-            addWave(0.76f,1.69f,1.6f,0.0f);
+            addWave(0.1f,3.2f,2.4f,0.0f);
+            addWave(0.2f,2.4f,0.8f,0.0f);
+            addWave(0.23f,1.1f,1.31f,0.0f);
+            addWave(0.03f,0.54f,0.52f,0.0f);
+            addWave(0.3f,1.69f,1.6f,0.0f);
 
 
             Real x,y,derivativeX,derivativeY,a,r,l,phase;

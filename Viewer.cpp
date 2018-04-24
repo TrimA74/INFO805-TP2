@@ -59,7 +59,7 @@ rt::Viewer::keyPressEvent(QKeyEvent *e)
     // Get event modifiers key
     const Qt::KeyboardModifiers modifiers = e->modifiers();
     bool handled = false;
-    if ( ((e->key()==Qt::Key_R) || (e->key()==Qt::Key_V)) && ptrScene != 0 )
+    if ( ((e->key()==Qt::Key_R) || (e->key()==Qt::Key_T)) && ptrScene != 0 )
     {
         int w = camera()->screenWidth();
         int h = camera()->screenHeight();
@@ -79,7 +79,7 @@ rt::Viewer::keyPressEvent(QKeyEvent *e)
         else if ( modifiers == Qt::NoModifier ) { w /= 8; h /= 8; }
         Image2D<Color> image( w, h );
         renderer.setResolution( image.w(), image.h() );
-        if (e->key()==Qt::Key_V){
+        if (e->key()==Qt::Key_T){
             std::cout << "anti-aliasing" << std::endl;
             renderer.randomRender( image, maxDepth );
         }else{

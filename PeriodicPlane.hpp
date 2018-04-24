@@ -29,6 +29,11 @@ namespace rt {
         };
 
         void coordinates( Point3 p, Real& x, Real& y) {
+
+/*
+            x = (c -p).dot(u) / u.norm();
+            y = (c -p).dot(v) / v.norm();
+*/
             x = u[0] + v[0] + p[0];
             y = u[1] + v[1] + p[1];
         }

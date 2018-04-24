@@ -37,9 +37,9 @@ namespace rt {
                 x -= floor( x );
                 y -= floor( y );
                 if ( ( ( x >= 0.5f ) && ( y >= 0.5f ) ) || ( ( x < 0.5f ) && ( y < 0.5f ) ) )
-                    result += (1.0f - t)*Color( 0.2f, 0.2f, 0.2f ) + t * Color( 1.0f, 1.0f, 1.0f );
+                    result += (1.0f - t)*Color( 0.7f, 0.7f, 0.7f ) + t * Color( 1.0f, 1.0f, 1.0f );
                 else
-                    result += (1.0f - t)*Color( 0.4f, 0.4f, 0.4f ) + t * Color( 1.0f, 1.0f, 1.0f );
+                    result += (1.0f - t)*Color( 0.9f, 0.9f, 0.9f ) + t * Color( 1.0f, 1.0f, 1.0f );
                 return result;
             }
         }

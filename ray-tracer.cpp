@@ -41,26 +41,37 @@ int main(int argc, char** argv)
 
     // Light at infinity
 
-    Light* light0 = new PointLight( GL_LIGHT0, Point4( 0,0,1,0 ),
-                                    Color( 1.0, 1.0, 1.0 ) );
-
-
-    Light* light1 = new PointLight( GL_LIGHT1, Point4( -10,-4,5,1 ),
+    Light* light1 = new PointLight( GL_LIGHT1, Point4( 20,5,10,1 ),
                                     Color( 1.0, 0.8, 0.8 ) );
-    scene.addLight( light0 );
+
     scene.addLight( light1 );
     // Objects
-    Sphere* sphere1 = new Sphere( Point3( 0, 0, 2), 2.0, Material::bronze() );
-    Sphere* sphere2 = new Sphere( Point3( 0, 4, 1), 1.0, Material::emerald() );
-    Sphere* sphere3 = new Sphere( Point3( 6, 6, 3), 3.0, Material::whitePlastic() );
+    Sphere* sphere1 = new Sphere( Point3( 0, 3, 2), 2.0, Material::emerald() );
+    Sphere* sphere10 = new Sphere( Point3( 0, 9, 2), 2.0, Material::emerald() );
+    Sphere* sphere2 = new Sphere( Point3( 10, 3, 2), 2.0, Material::emerald() );
+    Sphere* sphere11 = new Sphere( Point3( 10, 9, 2), 2.0, Material::emerald() );
+    Sphere* sphere3 = new Sphere( Point3( 6, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere4 = new Sphere( Point3( 5, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere5 = new Sphere( Point3( 4, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere6 = new Sphere( Point3( 7, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere7 = new Sphere( Point3( 8, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere8 = new Sphere( Point3( 3, 6, 3), 3.0, Material::emerald() );
+    Sphere* sphere9 = new Sphere( Point3( 9, 6, 3), 3.0, Material::emerald() );
     scene.addObject( sphere1 );
+    scene.addObject( sphere10 );
     scene.addObject( sphere2 );
+    scene.addObject( sphere11 );
     scene.addObject( sphere3 );
-    addBubble( scene, Point3( -5, 4, 2), 2.0, Material::glass() );
+    scene.addObject( sphere4 );
+    scene.addObject( sphere5 );
+    scene.addObject( sphere6 );
+    scene.addObject( sphere7 );
+    scene.addObject( sphere8 );
+    scene.addObject( sphere9 );
 
     // Un sol noir et blanc
-    PeriodicPlane* pplane = new PeriodicPlane( Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
-    Material::whitePlastic(), Material::darkMatter(), 0.1f );
+    PeriodicPlane* pplane = new PeriodicPlane( Point3( 0, 0, -1 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
+    Material::whitePlastic(), Material::glass(), 0.1f );
 
     WaterPlane* wplane = new WaterPlane(Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
                                         Material::blueWater());
@@ -68,18 +79,19 @@ int main(int argc, char** argv)
     //scene.addObject( pplane );
     scene.addObject( wplane );
 
-    /*
+
     // Un mur de building "moderne" à gauche.
+    /*
     PeriodicPlane* pplane2 = new PeriodicPlane( Point3( -10, 0, 0 ), Vector3( 0, 2, 0 ), Vector3( 0, 0, 4 ),
                                                 Material::emerald(), Material::emerald(), 0.025f );
+    scene.addObject( pplane2 );*/
 
-
-
+/*
     // Un mur de building "moderne" à gauche.
     PeriodicPlane* pplane3 = new PeriodicPlane( Point3( -10, -30, 0 ), Vector3( 0, 2,12), Vector3( 0, 21, 4 ),
                                                 Material::bronze(), Material::bronze(), 0.025f );
 
-    scene.addObject( pplane2 );
+
     scene.addObject( pplane3 );*/
 
 
