@@ -36,7 +36,7 @@ rt::Viewer::init()
     setKeyDescription(Qt::CTRL+Qt::Key_R, "Renders the scene with a ray-tracer (high resolution)");
     setKeyDescription(Qt::Key_D, "Augments the max depth of ray-tracing algorithm");
     setKeyDescription(Qt::SHIFT+Qt::Key_D, "Decreases the max depth of ray-tracing algorithm");
-    setKeyDescription(Qt::CTRL+Qt::Key_V, "Renders the scene with a ray-tracer (high resolution with anti-aliasing)");
+    setKeyDescription(Qt::CTRL+Qt::Key_Q, "Renders the scene with a ray-tracer (high resolution with anti-aliasing)");
 
     // Opens help window
     help();
@@ -59,7 +59,7 @@ rt::Viewer::keyPressEvent(QKeyEvent *e)
     // Get event modifiers key
     const Qt::KeyboardModifiers modifiers = e->modifiers();
     bool handled = false;
-    if ( ((e->key()==Qt::Key_R) || (e->key()==Qt::Key_T)) && ptrScene != 0 )
+    if ( ((e->key()==Qt::Key_R) || (e->key()==Qt::Key_Q)) && ptrScene != 0 )
     {
         int w = camera()->screenWidth();
         int h = camera()->screenHeight();
@@ -79,7 +79,7 @@ rt::Viewer::keyPressEvent(QKeyEvent *e)
         else if ( modifiers == Qt::NoModifier ) { w /= 8; h /= 8; }
         Image2D<Color> image( w, h );
         renderer.setResolution( image.w(), image.h() );
-        if (e->key()==Qt::Key_T){
+        if (e->key()==Qt::Key_Q){
             std::cout << "anti-aliasing" << std::endl;
             renderer.randomRender( image, maxDepth );
         }else{

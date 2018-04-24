@@ -35,7 +35,7 @@ namespace rt {
 
         void init( Viewer& /* viewer */ ) {}
 
-        void draw(Viewer &viewer) override {
+        void draw(Viewer& /* viewer */)  {
             glBegin(GL_TRIANGLES);
             glColor4fv( main_m.ambient );
             glMaterialfv(GL_FRONT, GL_DIFFUSE, main_m.diffuse);
@@ -72,7 +72,7 @@ namespace rt {
             Real x,y,derivativeX,derivativeY,a,r,l,phase;
             Vector3 direction,vy=Vector3(0.0,0.0,0.0),vx=Vector3(0.0,0.0,0.0);
             coordinates(p,x,y);
-            for(int i =0 ; i < waveList.size();i++){
+            for(unsigned int i =0 ; i < waveList.size();i++){
                 a = waveList.at(i).a;
                 r = waveList.at(i).r;
                 l = waveList.at(i).l;
@@ -81,6 +81,9 @@ namespace rt {
 
                 if(t != 0.0f){phase = 0.0f;}
                 Real f = (2 * M_PI * t )/ l + phase;
+
+                /// on calcul les dérivés partiel pour x et y
+
                 derivativeX = (r * cos(a) * 2 * M_PI * sin(f)) / l;
                 derivativeY = (r * sin(a) * 2 * M_PI * sin(f)) / l;
 
@@ -95,7 +98,7 @@ namespace rt {
             return normal;
         }
 
-        Material getMaterial( Point3 p ) {
+        Material getMaterial( Point3 /* p */ ) {
             return main_m;
         }
 

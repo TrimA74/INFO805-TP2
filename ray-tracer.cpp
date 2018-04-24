@@ -34,11 +34,6 @@ int main(int argc, char** argv)
     Scene scene;
 
 
-    /***
-     * LACHAUX SCENE
-     */
-
-
     // Light at infinity
 
     Light* light1 = new PointLight( GL_LIGHT1, Point4( 20,5,10,1 ),
@@ -70,50 +65,18 @@ int main(int argc, char** argv)
     scene.addObject( sphere9 );
 
     // Un sol noir et blanc
+
     PeriodicPlane* pplane = new PeriodicPlane( Point3( 0, 0, -1 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
-    Material::whitePlastic(), Material::glass(), 0.1f );
+    Material::whitePlastic(), Material::darkMatter(), 0.1f );
+
 
     WaterPlane* wplane = new WaterPlane(Point3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( 0, 5, 0 ),
                                         Material::blueWater());
 
-    //scene.addObject( pplane );
+    scene.addObject( pplane );
     scene.addObject( wplane );
 
 
-    // Un mur de building "moderne" à gauche.
-    /*
-    PeriodicPlane* pplane2 = new PeriodicPlane( Point3( -10, 0, 0 ), Vector3( 0, 2, 0 ), Vector3( 0, 0, 4 ),
-                                                Material::emerald(), Material::emerald(), 0.025f );
-    scene.addObject( pplane2 );*/
-
-/*
-    // Un mur de building "moderne" à gauche.
-    PeriodicPlane* pplane3 = new PeriodicPlane( Point3( -10, -30, 0 ), Vector3( 0, 2,12), Vector3( 0, 21, 4 ),
-                                                Material::bronze(), Material::bronze(), 0.025f );
-
-
-    scene.addObject( pplane3 );*/
-
-
-    /********* MY SCENE
-    */
-/*
-  // Light at infinity
-  Light* light0 = new PointLight( GL_LIGHT0, Point4( 0,0,1,0 ),
-                                    Color( 1.0, 1.0, 1.0 ) );
-  Light* light1 = new PointLight( GL_LIGHT1, Point4( 7,5,15,1 ),
-                                  Color( 1.0, 1.0, 1.0 ) );
-  //scene.addLight( light0 );
-  scene.addLight( light1 );
-
-  // Objects
-  Sphere* sphere1 = new Sphere( Point3( -4.5f, 4, 10), 2.0, Material::emerald() );
-  Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::whitePlastic() );
-  Sphere* sphere3 = new Sphere( Point3( 0, 4, 5), 2.0, Material::bronze() );
-  scene.addObject( sphere1 );
-  scene.addObject( sphere2 );
-  scene.addObject( sphere3 );
-*/
 
 
     // Instantiate the viewer.
