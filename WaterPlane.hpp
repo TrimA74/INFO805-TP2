@@ -1,41 +1,36 @@
 //
-// Created by trima on 20/04/18.
+// Created by trima on 21/04/18.
 //
 
-#ifndef RAY_TRACER_PERIODIC_HPP
-#define RAY_TRACER_PERIODIC_HPP
+#ifndef RAY_TRACER_WATERPLANE_HPP
+#define RAY_TRACER_WATERPLANE_HPP
 
 
 #include "GraphicalObject.h"
+#include "Wave.hpp"
 #include <math.h>
 
 /// Namespace RayTracer
 namespace rt {
 
-    struct PeriodicPlane : public GraphicalObject
+    struct WaterPlane : public GraphicalObject
     {
         /// Creates a periodic infinite plane passing through \a c and
         /// tangent to \a u and \a v. Then \a w defines the width of the
         /// band around (0,0) and its period to put material \a band_m,
         /// otherwise \a main_m is used.
-        PeriodicPlane( Point3 c, Vector3 u, Vector3 v,
-                       Material main_m, Material band_m, Real w) {
+        WaterPlane( Point3 c, Vector3 u, Vector3 v,
+                       Material main_m) {
             this->c = c;
             this->u = u;
             this->v = v;
             this->main_m = main_m;
-            this->band_m = band_m;
-            this->w = w;
+
         };
 
         void coordinates( Point3 p, Real& x, Real& y) {
-
-/*
-            x = (c -p).dot(u) / u.norm();
-            y = (c -p).dot(v) / v.norm();
-*/
-            x = u[0] + v[0] + p[0];
-            y = u[1] + v[1] + p[1];
+            x = p[0];
+            y = p[1];
         }
 
         void init( Viewer& /* viewer */ ) {}
@@ -64,22 +59,44 @@ namespace rt {
         }
 
         Vector3 getNormal( Point3 p ) {
-            return p + u.cross( v );
+
+            waveList.clear();
+
+            addWave(0.1f,3.2f,2.4f,0.0f);
+            addWave(0.2f,2.4f,0.8f,0.0f);
+            addWave(0.23f,1.1f,1.31f,0.0f);
+            addWave(0.03f,0.54f,0.52f,0.0f);
+            addWave(0.3f,1.69f,1.6f,0.0f);
+
+
+            Real x,y,derivativeX,derivativeY,a,r,l,phase;
+            Vector3 direction,vy=Vector3(0.0,0.0,0.0),vx=Vector3(0.0,0.0,0.0);
+            coordinates(p,x,y);
+            for(int i =0 ; i < waveList.size();i++){
+                a = waveList.at(i).a;
+                r = waveList.at(i).r;
+                l = waveList.at(i).l;
+                phase = waveList.at(i).phase;
+                Real t = x * cos(a) + y * sin(a);
+
+                if(t != 0.0f){phase = 0.0f;}
+                Real f = (2 * M_PI * t )/ l + phase;
+                derivativeX = (r * cos(a) * 2 * M_PI * sin(f)) / l;
+                derivativeY = (r * sin(a) * 2 * M_PI * sin(f)) / l;
+
+                vx += Vector3(1,0,- derivativeX);
+                vy += Vector3(0,1,- derivativeY);
+            }
+
+            Vector3 cross = vx.cross(vy);
+
+
+            Vector3 normal = cross / cross.norm();
+            return normal;
         }
 
         Material getMaterial( Point3 p ) {
-
-            Real x,y;
-            coordinates(p,x,y);
-            int roundX = (int)x;
-            int roundY = (int)y;
-            Real xDiff = x - roundX;
-            Real yDiff = y - roundY;
-            if(xDiff < 0){xDiff *= -1.0f;}
-            if(yDiff < 0){yDiff *= -1.0f;}
-            return (xDiff < w || yDiff < w) ? band_m : main_m;
-
-
+            return main_m;
         }
 
         Real rayIntersection( const Ray& ray, Point3& p ) {
@@ -105,13 +122,18 @@ namespace rt {
             return t >=0 ? -1.0f :1.0f;
         }
 
+        void addWave (Real r, Real a, Real l, Real phase){
+            waveList.push_back(Wave(r,a,l,phase));
+        }
+
     public:
         Point3 c;
         Vector3 u, v;
-        Material band_m, main_m;
-        Real w;
+        Material  main_m;
+        std::vector<Wave> waveList;
     };
 }
 
 
-#endif //RAY_TRACER_PERIODIC_HPP
+
+#endif //RAY_TRACER_WATERPLANE_HPP

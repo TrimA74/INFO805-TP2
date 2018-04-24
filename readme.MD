@@ -15,7 +15,15 @@ Plan infini avec Anti-aliasing de 20
 
 ## Avancement du TP
 
-Toutes les questions ont été traitées jusqu'à 4.3
+Toutes les questions ont été traitées jusqu'à 5 exclus
+
+Nous avons fait les extensions suivantes : 
+- Plan infini quadrillage et eau
+- Anti-aliasing avec possibilité de faire un rendu anti-aliasing en utilisant `CTRL+T`
+
+## Dernier rendu 
+
+![alt rendu_final](https://raw.githubusercontent.com/TrimA74/INFO805-TP2/master/last_rendu.png "Rendu final")
 
 ## Bétisier
 Mur en émeraude avec un PeriodicPlane de qualité

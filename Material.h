@@ -158,13 +158,13 @@ namespace rt {
         static Material blueWater()
         {
             Material m;
-            m.ambient   = Color( 0.1, 0.1, 0.2 );
-            m.diffuse   = Color( 0.1, 0.6, 0.8 );
+            m.ambient   = Color( 0.76, 0.93, 0.96);
+            m.diffuse   = Color( 0.29, 0.86, 0.95 );
             m.specular  = Color( 1.0, 1.0, 1.0 );
-            m.shinyness = 70.0f;
+            m.shinyness = 90.0f;
             m.coef_diffusion  = 0.01f;
-            m.coef_reflexion  = 0.2f;
-            m.coef_refraction = 0.8f;
+            m.coef_reflexion  = 0.4f;
+            m.coef_refraction = 0.9f;
             m.in_refractive_index  = 1.3f;
             m.out_refractive_index = 1.0f;
             return m;
